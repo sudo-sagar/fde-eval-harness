@@ -43,7 +43,7 @@ The local model gave generic, useless advice ("might crash", "might fail"). The 
 ## Architecture
 
 Here is the end-to-end data flow of the evaluation harness:
-
+```
 flowchart TD
     A[GitHub CLI] -->|gh pr diff| B(14 Real .diff files)
     B --> C[(data/diffs/)]
@@ -65,14 +65,15 @@ flowchart TD
     N -->|Ground Truth| O
     
     O -->|Finds AI misses|
+```
     
 ## Run locally
-# 1. Install dependencies
+1. Install dependencies
 npm install
 
-# 2. Authenticate Cursor CLI
-# (Requires Cursor Agent installed globally)
+2. Authenticate Cursor CLI
+(Requires Cursor Agent installed globally)
 agent login
 
-# 3. Run the eval harness
+3. Run the eval harness
 npx tsx src/evals.ts
