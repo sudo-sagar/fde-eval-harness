@@ -69,11 +69,11 @@ flowchart TD
     
 ## Run locally
 1. Install dependencies
-# npm install
+*npm install*
 
 2. Authenticate Cursor CLI
 (Requires Cursor Agent installed globally)
-# agent login
+*agent login*
 
 3. Run the eval harness
-# npx tsx src/evals.ts # npx tsx src/eval.ts
+*npx tsx src/evals.ts # npx tsx src/eval.ts*
