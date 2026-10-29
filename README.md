@@ -44,57 +44,28 @@ The local model gave generic, useless advice ("might crash", "might fail"). The 
 
 Here is the end-to-end data flow of the evaluation harness:
 
-```mermaid
-    %% Styling
-    classDef input fill:#f9f9f9,stroke:#333,stroke-width:2px;
-    classDef process fill:#e1f5fe,stroke:#0288d1,stroke-width:2px;
-    classDef agent fill:#fff3e0,stroke:#f57c00,stroke-width:2px;
-    classDef output fill:#e8f5e9,stroke:#388e3c,stroke-width:2px;
-    classDef database fill:#f3e5f5,stroke:#8e24aa,stroke-width:2px;
-
-    %% Data Ingestion
-    subgraph Data Collection
-        A[GitHub CLI] -->|gh pr diff| B(14 Real .diff files)
-        B --> C[(data/diffs/)]
-    end
-
-    %% The Eval Harness
-    subgraph The Eval Harness
-        C -->|Read file| D(src/evals.ts & src/eval.ts)
-        D -->|Truncates >20k chars| E[Construct Prompt]
-        E -->|Inject Prompt & Diff| F(src/prompt.ts)
-    end
-
-    %% LLM Processing
-    subgraph Execution Pipeline
-        F -->|spawnSync pipe| G{Cursor Agent CLI}
-        G -->|Headless API Call| H[Cloud LLM]
-        H -->|Returns text| I[Parse JSON]
-    end
-
-    %% Output
-    subgraph Scoring & Results
-        I -->|Valid JSON| J[Generate Markdown Report]
-        I -.->|Malformed JSON / Timeout| K[Log Error & Continue]
-        J --> L[(data/cursor_results.md ai_results.md)]
-    end
-
-    %% Ground Truth Comparison
-    subgraph Human-in-the-Loop
-        M[Human Review] -->|Reads code & writes edge cases| N[(data/labels.md)]
-        L -->|Compare Results| O{Final Evaluation}
-        N -->|Ground Truth| O
-    end
-
+flowchart TD
+    A[GitHub CLI] -->|gh pr diff| B(14 Real .diff files)
+    B --> C[(data/diffs/)]
+    
+    C -->|Read file| D(src/evals.ts, eval.ts)
+    D -->|Truncates >20k chars| E[Construct Prompt]
+    E -->|Inject Prompt & Diff| F(src/prompt.ts)
+    
+    F -->|spawnSync pipe| G{Cursor Agent CLI}
+    G -->|Headless API Call| H[Cloud LLM]
+    H -->|Returns text| I[Parse JSON]
+    
+    I -->|Valid JSON| J[Generate Markdown Report]
+    I -.->|Malformed JSON / Timeout| K[Log Error & Continue]
+    J --> L[(data/cursor_results.md, ai_results.md)]
+    
+    M[Human Review] -->|Reads code & writes edge cases| N[(data/labels.md)]
+    L -->|Compare Results| O{Final Evaluation}
+    N -->|Ground Truth| O
+    
     O -->|Finds AI misses|
-
-    %% Apply Classes
-    class A,B,C database;
-    class D,E,F process;
-    class G,H,I agent;
-    class J,K,L,N output;
-    class M,O input;
-```
+    
 ## Run locally
 # 1. Install dependencies
 npm install
