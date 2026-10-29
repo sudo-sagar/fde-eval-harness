@@ -95,7 +95,7 @@ flowchart TD
     class G,H,I agent;
     class J,K,L,N output;
     class M,O input;
-
+```
 ## Run locally
 # 1. Install dependencies
 npm install
