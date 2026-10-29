@@ -44,7 +44,6 @@ The local model gave generic, useless advice ("might crash", "might fail"). The 
 
 Here is the end-to-end data flow of the evaluation harness:
 
-```mermaid
 flowchart TD
     %% Styling
     classDef input fill:#f9f9f9,stroke:#333,stroke-width:2px;
@@ -95,7 +94,7 @@ flowchart TD
     class G,H,I agent;
     class J,K,L,N output;
     class M,O input;
-```
+
 ## Run locally
 # 1. Install dependencies
 npm install
